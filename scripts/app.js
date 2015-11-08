@@ -14,7 +14,7 @@ var app = angular
   .config(function ($routeProvider) {
     $routeProvider      
       .when('/', {
-        templateUrl: 'views/browse.html' 
+        templateUrl: 'views/browse.html', 
         controller: 'BrowseController'      
       })
       .when('/login', {
