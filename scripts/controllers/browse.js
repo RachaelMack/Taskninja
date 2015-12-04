@@ -27,19 +27,22 @@ app.controller('BrowseController', function($scope, $routeParams, toaster, Task,
 
 			$scope.isTaskCreator = Task.isCreator;
 			$scope.isOpen = Task.isOpen;	
-			$scope.block = false;
+			
+			$scope.isAssignee = Task.isAssignee;
+			$scope.isCompleted = Task.isCompleted;
 
-
-			$scope.isOfferMaker = Offer.isMaker;
 		}
 		
 		$scope.comments = Comment.comments(task.$id);
-		$scope.offers = Offer.offers(task.$id);		
+		$scope.offers = Offer.offers(task.$id);	
+		$scope.block = false;	
+		$scope.isOfferMaker = Offer.isMaker;
+		
 	};
 
 	$scope.cancelTask = function(taskId) {
 		Task.cancelTask(taskId).then(function() {
-			toaster.pop('success', "This task is cancelled successfully.");
+			toaster.pop('success', 'This task is cancelled successfully.');
 		});
 	};
 
@@ -64,7 +67,7 @@ app.controller('BrowseController', function($scope, $routeParams, toaster, Task,
 		};
 
 		Offer.makeOffer($scope.selectedTask.$id, offer).then(function() {
-			toaster.pop('success', "Your offer has been placed.");
+			toaster.pop('success', 'Your offer has been placed');
 			$scope.alreadyOffered = true;
 			$scope.total = '';
 			$scope.block = true;			
@@ -73,10 +76,22 @@ app.controller('BrowseController', function($scope, $routeParams, toaster, Task,
 
 	$scope.cancelOffer = function(offerId) {
 		Offer.cancelOffer($scope.selectedTask.$id, offerId).then(function() {
-			toaster.pop('success', "Your offer has been cancelled.");
+			toaster.pop('success', 'Your offer has been cancelled');
 			$scope.alreadyOffered = false;
 			$scope.block = false;			
 		});
 	};
-	
-});
+
+	$scope.acceptOffer = function(offerId, runnerId) {
+		Offer.acceptOffer($scope.selectedTask.$id, offerId, runnerId).then(function() {
+			toaster.pop('success', 'You have accepted an offer')
+		});
+	};
+
+	$scope.completeTask = function(taskId) {
+		Task.completeTask(taskId).then (function() {
+			toaster.pop('success', 'Task Complete');
+		});
+	};
+		
+	});
